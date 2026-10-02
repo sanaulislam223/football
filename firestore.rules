@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && request.auth.uid == "6Z2cc2d3XCa5JzmlHPzKSb8eull2";
+    }
+
+    // Sanitized club data: signed-in club users can read, only admin can write.
+    match /club/public {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Full club records including private player details and finances: admin only.
+    match /club/private {
+      allow read, create, update, delete: if isAdmin();
+    }
+
+    // Deny every document not explicitly allowed above.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
