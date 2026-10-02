@@ -71,3 +71,181 @@
 
 .gate-language-toggle{display:inline-flex;margin:0 0 12px auto;float:right;min-height:38px}
 @media(max-width:760px){.gate-language-toggle{display:inline-flex!important}}
+
+/* ==========================================
+   PINK CARD BACKGROUND + HOVER EFFECT
+   + ANIMATED TIRANGA CONIC GRADIENT BORDER
+========================================== */
+
+/* Card selectors: existing website cards */
+:where(
+    .card,
+    .stat-card,
+    .player-card,
+    .match-card,
+    .fixture-card,
+    .trophy-card,
+    .staff-card,
+    .finance-card,
+    .dashboard-card,
+    .feature-card,
+    .summary-card
+) {
+    --card-radius: 16px;
+
+    position: relative;
+    isolation: isolate;
+    border: 1px solid rgba(236, 72, 153, 0.20);
+    border-radius: var(--card-radius);
+
+    /* Pink background */
+    background: linear-gradient(
+        135deg,
+        #fff0f6 0%,
+        #ffe4ef 55%,
+        #fff5f9 100%
+    );
+
+    /* Soft shadow */
+    box-shadow: 0 4px 14px rgba(190, 24, 93, 0.10);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+/* Animated tricolour border */
+:where(
+    .card,
+    .stat-card,
+    .player-card,
+    .match-card,
+    .fixture-card,
+    .trophy-card,
+    .staff-card,
+    .finance-card,
+    .dashboard-card,
+    .feature-card,
+    .summary-card
+)::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--card-radius) + 2px);
+    padding: 2px;
+
+    background: conic-gradient(
+        from var(--tiranga-angle, 0deg),
+        #ff9933 0deg,
+        #ffffff 90deg,
+        #138808 180deg,
+        #ffffff 270deg,
+        #ff9933 360deg
+    );
+
+    /* Show gradient only around the border */
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+
+    pointer-events: none;
+    z-index: -1;
+
+    animation: tirangaBorderMove 5s linear infinite;
+}
+
+/* Border rotation animation */
+@property --tiranga-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes tirangaBorderMove {
+    to {
+        --tiranga-angle: 360deg;
+    }
+}
+
+/* Hover effect */
+@media (hover: hover) and (pointer: fine) {
+    :where(
+        .card,
+        .stat-card,
+        .player-card,
+        .match-card,
+        .fixture-card,
+        .trophy-card,
+        .staff-card,
+        .finance-card,
+        .dashboard-card,
+        .feature-card,
+        .summary-card
+    ):hover {
+        transform: translateY(-5px);
+
+        box-shadow:
+            0 12px 28px rgba(190, 24, 93, 0.18),
+            0 0 12px rgba(255, 153, 51, 0.10);
+
+        border-color: rgba(236, 72, 153, 0.45);
+    }
+}
+
+/* Mobile: avoid unnecessary movement */
+@media (max-width: 600px) {
+    :where(
+        .card,
+        .stat-card,
+        .player-card,
+        .match-card,
+        .fixture-card,
+        .trophy-card,
+        .staff-card,
+        .finance-card,
+        .dashboard-card,
+        .feature-card,
+        .summary-card
+    ) {
+        --card-radius: 13px;
+        box-shadow: 0 3px 10px rgba(190, 24, 93, 0.09);
+    }
+}
+
+/* Respect reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+    :where(
+        .card,
+        .stat-card,
+        .player-card,
+        .match-card,
+        .fixture-card,
+        .trophy-card,
+        .staff-card,
+        .finance-card,
+        .dashboard-card,
+        .feature-card,
+        .summary-card
+    )::before {
+        animation: none;
+    }
+
+    :where(
+        .card,
+        .stat-card,
+        .player-card,
+        .match-card,
+        .fixture-card,
+        .trophy-card,
+        .staff-card,
+        .finance-card,
+        .dashboard-card,
+        .feature-card,
+        .summary-card
+    ) {
+        transition: none;
+    }
+}
