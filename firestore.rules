@@ -5,7 +5,6 @@ service cloud.firestore {
     function isAdmin() {
       return signedIn() && request.auth.uid == "6Z2cc2d3XCa5JzmlHPzKSb8eull2";
     }
-
     // Sanitized club data: signed-in club users can read, only admin can write.
     match /club/public {
       allow read: if signedIn();
