@@ -9,6 +9,8 @@ let data = loadData();
 let currentRole = "";
 let firebaseReady = false;
 let signedInEmail = "";
+let selectedPlayerPhoto = "";
+let playerPhotoChanged = false;
 function isAdmin(){return currentRole === "admin";}
 function requireAdmin(){if(!isAdmin()){toast("Ye kaam sirf Admin kar sakta hai.");return false;}return true;}
 function applyRole(){
@@ -56,6 +58,8 @@ function renderExpenses(){
 function renderPlayers(){
   const q=($("playerSearch").value||"").toLowerCase(),status=$("playerStatusFilter").value;
   const list=data.players.filter(p=>(!status||p.status===status)&&[p.name,p.father,p.position,p.jersey].join(" ").toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
+  const count=$("playerListCount");
+  if(count) count.textContent=`${data.players.length} ${data.players.length===1?"player":"players"}`;
   $("playerGrid").innerHTML=list.map(p=>`<article class="player-card"><div class="avatar">${p.photo?`<img src="${clean(p.photo)}" alt="" onerror="this.remove()">`:clean(initials(p.name))}</div><div class="player-info"><h3>${clean(p.name)} ${p.jersey?`<small>#${clean(p.jersey)}</small>`:""}</h3><p>${clean(p.position)} · ${clean(p.father||"Father name not added")}</p><p class="private-finance">Monthly fee: <b>${money(p.fee)}</b></p><span class="pill ${p.status.toLowerCase()}">${clean(p.status)}</span><div class="card-actions"><button class="edit-btn" data-edit-player="${p.id}">Edit</button><button class="delete-btn" data-archive-player="${p.id}">${p.status==="Inactive"?"Delete":"Archive"}</button></div></div></article>`).join("");emptyState("playersEmpty",!list.length);
 }
 function renderFixtures(){
@@ -101,7 +105,46 @@ function renderStaff(){
 }
 function resetForm(id){$(id).reset();}
 function formData(ids){return Object.fromEntries(ids.map(id=>[id,$(id).value.trim()]));}
-$("playerForm").addEventListener("submit",e=>{e.preventDefault();if(!requireAdmin())return;const id=$("playerId").value;const p={id:id||uid(),name:$("playerName").value.trim(),father:$("fatherName").value.trim(),dob:$("dob").value,jersey:$("jersey").value,position:$("position").value,phone:$("playerPhone").value.trim(),joining:$("joiningDate").value,fee:Number($("monthlyFee").value)||0,status:$("playerStatus").value,photo:$("photoUrl").value.trim(),notes:$("playerNotes").value.trim()};if(id)data.players=data.players.map(x=>x.id===id?p:x);else data.players.push(p);save();closeModal($("playerModal"));resetForm("playerForm");$("playerId").value="";toast(id?"Player updated":"Player added");});
+function updatePlayerPhotoPreview(src){
+  const box=$("playerPhotoPreview"); if(!box)return;
+  box.innerHTML=src?`<img src="${clean(src)}" alt="Player photo preview"><small>Selected player photo</small>`:`<span>⚽</span><small>Photo preview</small>`;
+}
+function compressPlayerPhoto(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error("Photo read nahi ho payi."));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error("Ye image open nahi ho paayi."));
+      img.onload=()=>{
+        const max=320, scale=Math.min(1,max/Math.max(img.width,img.height));
+        const canvas=document.createElement("canvas");
+        canvas.width=Math.max(1,Math.round(img.width*scale)); canvas.height=Math.max(1,Math.round(img.height*scale));
+        const ctx=canvas.getContext("2d"); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        let output=canvas.toDataURL("image/jpeg",.62);
+        if(output.length>70000) output=canvas.toDataURL("image/jpeg",.42);
+        resolve(output);
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+$("playerPhotoInput").addEventListener("change",async e=>{
+  const file=e.target.files?.[0]; if(!file)return;
+  if(!file.type.startsWith("image/")){toast("Image file select karein.");return;}
+  try{selectedPlayerPhoto=await compressPlayerPhoto(file);playerPhotoChanged=true;$("photoUrl").value="";updatePlayerPhotoPreview(selectedPlayerPhoto);}
+  catch(err){toast(err.message||"Photo select nahi ho paayi.");}
+});
+$("photoUrl").addEventListener("input",()=>{
+  const value=$("photoUrl").value.trim();
+  if(value){selectedPlayerPhoto=value;playerPhotoChanged=true;updatePlayerPhotoPreview(value);}
+  else if(!playerPhotoChanged){selectedPlayerPhoto="";updatePlayerPhotoPreview("");}
+});
+$("clearPlayerPhoto").addEventListener("click",()=>{
+  selectedPlayerPhoto="";playerPhotoChanged=true;$("photoUrl").value="";$("playerPhotoInput").value="";updatePlayerPhotoPreview("");
+});
+$("playerForm").addEventListener("submit",e=>{e.preventDefault();if(!requireAdmin())return;const id=$("playerId").value;const existing=data.players.find(x=>x.id===id);const typedPhoto=$("photoUrl").value.trim();const p={id:id||uid(),name:$("playerName").value.trim(),father:$("fatherName").value.trim(),dob:$("dob").value,jersey:$("jersey").value,position:$("position").value,phone:$("playerPhone").value.trim(),joining:$("joiningDate").value,fee:Number($("monthlyFee").value)||0,status:$("playerStatus").value,photo:playerPhotoChanged?selectedPlayerPhoto:(typedPhoto||existing?.photo||selectedPlayerPhoto||""),notes:$("playerNotes").value.trim()};if(id)data.players=data.players.map(x=>x.id===id?p:x);else data.players.push(p);if($("playerListDropdown"))$("playerListDropdown").open=true;save();closeModal($("playerModal"));resetForm("playerForm");$("playerId").value="";selectedPlayerPhoto="";playerPhotoChanged=false;$("photoUrl").value="";updatePlayerPhotoPreview("");$("playerPhotoInput").value="";toast(id?"Player updated":"Player added");});
 $("incomeForm").addEventListener("submit",e=>{e.preventDefault();if(!requireAdmin())return;data.income.push({id:uid(),date:$("incomeDate").value,type:$("incomeType").value,source:$("incomeSource").value.trim(),amount:Number($("incomeAmount").value),period:$("incomePeriod").value.trim(),method:$("incomeMethod").value,notes:$("incomeNotes").value.trim()});save();closeModal($("incomeModal"));resetForm("incomeForm");$("incomeDate").value=today();toast("Income saved");});
 $("expenseForm").addEventListener("submit",e=>{e.preventDefault();if(!requireAdmin())return;data.expenses.push({id:uid(),date:$("expenseDate").value,category:$("expenseCategory").value,vendor:$("expenseVendor").value.trim(),amount:Number($("expenseAmount").value),method:$("expenseMethod").value,receipt:$("expenseReceipt").value.trim(),details:$("expenseDetails").value.trim()});save();closeModal($("expenseModal"));resetForm("expenseForm");$("expenseDate").value=today();toast("Expense saved");});
 $("matchForm").addEventListener("submit",e=>{e.preventDefault();if(!requireAdmin())return;data.matches.push({id:uid(),date:$("matchDate").value,tournament:$("tournament").value.trim(),opponent:$("opponent").value.trim(),ground:$("ground").value.trim(),ourGoals:$("ourGoals").value,theirGoals:$("theirGoals").value,status:$("matchStatus").value,notes:$("matchNotes").value.trim()});save();closeModal($("matchModal"));resetForm("matchForm");$("matchDate").value=today();toast("Match saved");});
@@ -111,7 +154,7 @@ document.addEventListener("click",e=>{
  const close=e.target.closest("[data-close]");if(close){closeModal(close.closest(".modal-backdrop"));return;}
  if(e.target.classList.contains("modal-backdrop"))closeModal(e.target);
  const del=e.target.closest("[data-delete]");if(del){if(!requireAdmin())return;const kind=del.dataset.delete;if(confirm("Is record ko delete karna hai? Backup pehle download kar lein.")){data[kind]=data[kind].filter(x=>x.id!==del.dataset.id);save();toast("Record deleted");}return;}
- const edit=e.target.closest("[data-edit-player]");if(edit){if(!requireAdmin())return;const p=data.players.find(x=>x.id===edit.dataset.editPlayer);if(!p)return;$("playerId").value=p.id;$("playerName").value=p.name;$("fatherName").value=p.father||"";$("dob").value=p.dob||"";$("jersey").value=p.jersey||"";$("position").value=p.position||"Forward";$("playerPhone").value=p.phone||"";$("joiningDate").value=p.joining||"";$("monthlyFee").value=p.fee||0;$("playerStatus").value=p.status||"Active";$("photoUrl").value=p.photo||"";$("playerNotes").value=p.notes||"";openModal("playerModal");return;}
+ const edit=e.target.closest("[data-edit-player]");if(edit){if(!requireAdmin())return;const p=data.players.find(x=>x.id===edit.dataset.editPlayer);if(!p)return;$("playerId").value=p.id;$("playerName").value=p.name;$("fatherName").value=p.father||"";$("dob").value=p.dob||"";$("jersey").value=p.jersey||"";$("position").value=p.position||"Forward";$("playerPhone").value=p.phone||"";$("joiningDate").value=p.joining||"";$("monthlyFee").value=p.fee||0;$("playerStatus").value=p.status||"Active";$("photoUrl").value=(p.photo||"").startsWith("data:")?"":(p.photo||"");selectedPlayerPhoto=p.photo||"";playerPhotoChanged=false;updatePlayerPhotoPreview(p.photo||"");$("playerPhotoInput").value="";$("playerNotes").value=p.notes||"";openModal("playerModal");return;}
  const archive=e.target.closest("[data-archive-player]");if(archive){if(!requireAdmin())return;const p=data.players.find(x=>x.id===archive.dataset.archivePlayer);if(!p)return;if(p.status!=="Inactive"){if(confirm("Player ko inactive/archive kar dein? Isse fee aur history ka record rahega.")){p.status="Inactive";save();toast("Player archived");}}else if(confirm("Permanently delete? Related financial entries remain unchanged.")){data.players=data.players.filter(x=>x.id!==p.id);save();toast("Player deleted");}}
 });
 ["incomeSearch","incomeTypeFilter"].forEach(id=>$(id).addEventListener("input",renderIncome));
@@ -121,8 +164,10 @@ function downloadBackup(){if(!requireAdmin())return;const blob=new Blob([JSON.st
 $("exportBtn").addEventListener("click",downloadBackup);$("exportBtn2").addEventListener("click",downloadBackup);
 $("importFile").addEventListener("change",async e=>{if(!requireAdmin()){e.target.value="";return;}const file=e.target.files[0];if(!file)return;try{const parsed=JSON.parse(await file.text());if(!parsed||!Array.isArray(parsed.players)||!Array.isArray(parsed.income)||!Array.isArray(parsed.expenses))throw new Error("Invalid backup");if(confirm("Restore se current browser data replace hoga. Continue?")){data={...blankData(),...parsed};save();toast("Backup restored");}}catch(err){alert("Backup file valid nahi hai.");}e.target.value="";});
 $("clearDataBtn").addEventListener("click",()=>{if(!requireAdmin())return;if(confirm("Saara club data is browser se permanently clear ho jayega. Pehle backup liya hai?")){if(confirm("Final confirmation: clear all local records?")){data=blankData();save();toast("Local data cleared");}}});
-$("menuToggle").addEventListener("click",()=>$("mainNav").classList.toggle("open"));
-document.querySelectorAll("#mainNav a").forEach(a=>a.addEventListener("click",()=> $("mainNav").classList.remove("open")));
+$("menuToggle").addEventListener("click",()=>{const nav=$("mainNav");const open=nav.classList.toggle("open");$("menuToggle").setAttribute("aria-expanded",String(open));});
+document.querySelectorAll("#mainNav a").forEach(a=>a.addEventListener("click",()=>{$("mainNav").classList.remove("open");$("menuToggle").setAttribute("aria-expanded","false");}));
+document.addEventListener("click",e=>{if(window.innerWidth<=760&&!e.target.closest("#mainNav")&&!e.target.closest("#menuToggle")){$("mainNav").classList.remove("open");$("menuToggle").setAttribute("aria-expanded","false");}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("mainNav").classList.remove("open");$("menuToggle").setAttribute("aria-expanded","false");}});
 ["incomeDate","expenseDate","matchDate","joiningDate","fixtureDate"].forEach(id=>{if($(id)&&!$(id).value)$(id).value=today();});
 
 // The chosen hero photo is saved locally in this browser (not uploaded online).
