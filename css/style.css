@@ -249,3 +249,709 @@
         transition: none;
     }
 }
+
+
+
+```css
+/* =========================================
+   NAYYOUVAK SPORTING CLUB
+   PREMIUM PINK + 2D/3D ANIMATIONS
+========================================= */
+
+:root {
+    --pink-bg: #fff1f7;
+    --pink-light: #ffe0ee;
+    --pink-main: #f472b6;
+    --pink-dark: #be185d;
+    --pink-shadow: rgba(190, 24, 93, 0.20);
+}
+
+/* 1. LIGHT PINK WEBSITE BACKGROUND */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(
+        135deg,
+        #fff5f9 0%,
+        #ffeaf3 45%,
+        #fff1f7 100%
+    ) !important;
+    color: #4a1830;
+    overflow-x: hidden;
+}
+
+/* Soft animated background glow */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 12% 18%,
+            rgba(244, 114, 182, 0.15),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 88% 72%,
+            rgba(190, 24, 93, 0.09),
+            transparent 30%
+        );
+
+    animation: pinkBackgroundFlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes pinkBackgroundFlow {
+    0% {
+        transform: translate3d(-1%, 0, 0) scale(1);
+    }
+    100% {
+        transform: translate3d(1%, 1%, 0) scale(1.04);
+    }
+}
+
+/* 2. PREMIUM WHITE-PINK CARDS */
+.stat-card,
+.panel,
+.player-card,
+.staff-card,
+.table-wrap,
+.modal,
+.role-gate-card,
+.role-gate,
+.squad-picker,
+.squad-choice {
+    border: 1px solid rgba(244, 114, 182, 0.25) !important;
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 16px rgba(190, 24, 93, 0.08),
+        0 1px 3px rgba(190, 24, 93, 0.05);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* 3. LIGHT-PINK CARD HOVER + DARK-PINK SHADOW */
+@media (hover: hover) and (pointer: fine) {
+    .stat-card:hover,
+    .panel:hover,
+    .player-card:hover,
+    .staff-card:hover,
+    .squad-choice:hover {
+        background: linear-gradient(
+            145deg,
+            #fff0f7,
+            #ffd8e9
+        ) !important;
+
+        border-color: #f472b6 !important;
+
+        box-shadow:
+            0 15px 30px rgba(190, 24, 93, 0.19),
+            0 5px 12px rgba(190, 24, 93, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+        transform: translateY(-5px) scale(1.012);
+    }
+}
+
+/* 4. PLAYER CARD SPECIAL 3D EFFECT */
+.player-card,
+.staff-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #fff5f9
+    );
+}
+
+.player-card::before,
+.staff-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+
+    background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255, 255, 255, 0.75),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .player-card:hover::before,
+    .staff-card:hover::before {
+        animation: pinkCardShine 0.8s ease forwards;
+    }
+}
+
+@keyframes pinkCardShine {
+    to {
+        left: 150%;
+    }
+}
+
+/* 5. PLAYER PHOTO ANIMATION */
+.avatar {
+    border: 2px solid #ffd0e5;
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.12);
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .player-card:hover .avatar,
+    .staff-card:hover .avatar {
+        transform: scale(1.07) rotate(-2deg);
+        box-shadow: 0 7px 18px rgba(190, 24, 93, 0.22);
+    }
+}
+
+/* 6. PINK BUTTONS */
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #ec4899,
+        #be185d
+    ) !important;
+
+    color: #fff !important;
+    border: none;
+
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 20px rgba(190, 24, 93, 0.30);
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.btn-outline {
+    border-color: #f3a4c8;
+    transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+    background: #ffe3ef;
+    border-color: #ec4899;
+    color: #9d174d;
+}
+
+/* 7. PINK NAVIGATION */
+.topbar {
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid #f8c7de;
+    box-shadow: 0 4px 18px rgba(190, 24, 93, 0.07);
+    backdrop-filter: blur(12px);
+}
+
+.topbar nav a:hover,
+.topbar nav a.active {
+    background: #ffe0ee;
+    color: #9d174d;
+}
+
+.brand-mark {
+    background: linear-gradient(
+        135deg,
+        #ec4899,
+        #9d174d
+    );
+    box-shadow: 0 5px 13px rgba(190, 24, 93, 0.22);
+}
+
+/* 8. PINK SECTION HEADINGS */
+.section-heading h2 {
+    color: #831843;
+}
+
+.section-desc {
+    color: #9d5677;
+}
+
+/* Animated underline below section headings */
+.section-heading h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-heading h2::after {
+    content: "";
+    display: block;
+    width: 38%;
+    height: 3px;
+    margin-top: 5px;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #ec4899,
+        #f9a8d4
+    );
+
+    transition: width 0.3s ease;
+}
+
+.section-heading h2:hover::after {
+    width: 85%;
+}
+
+/* 9. INPUT FOCUS EFFECT */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ec4899 !important;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.13) !important;
+}
+
+/* 10. TABLE PINK HOVER */
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #fff0f7 !important;
+}
+
+th {
+    background: #ffe6f1;
+    color: #831843;
+}
+
+/* 11. PINK HERO SECTION */
+.hero:not(.hero-photo) {
+    background: linear-gradient(
+        120deg,
+        #831843 0%,
+        #be185d 52%,
+        #ec4899 100%
+    );
+    box-shadow: 0 12px 30px rgba(190, 24, 93, 0.19);
+}
+
+.hero-photo {
+    border: 1px solid rgba(244, 114, 182, 0.25);
+    box-shadow: 0 12px 30px rgba(190, 24, 93, 0.16);
+}
+
+/* 12. 2D FLOATING HERO BALL */
+.hero-ball {
+    filter: drop-shadow(0 12px 16px rgba(80, 10, 45, 0.25));
+    animation: pinkBallFloat 4s ease-in-out infinite;
+}
+
+@keyframes pinkBallFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(5deg);
+    }
+}
+
+/* 13. MOBILE RESPONSIVE POLISH */
+@media (max-width: 760px) {
+    .stat-card,
+    .panel,
+    .player-card,
+    .staff-card {
+        border-radius: 13px;
+    }
+
+    .player-card,
+    .staff-card {
+        padding: 14px;
+    }
+
+    .hero:not(.hero-photo) {
+        box-shadow: 0 7px 20px rgba(190, 24, 93, 0.14);
+    }
+}
+
+/* 14. ACCESSIBILITY: REDUCE MOTION */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+/* =========================================
+   NAYYOUVAK SPORTING CLUB
+   PREMIUM PINK + 2D/3D ANIMATIONS
+========================================= */
+
+:root {
+    --pink-bg: #fff1f7;
+    --pink-light: #ffe0ee;
+    --pink-main: #f472b6;
+    --pink-dark: #be185d;
+    --pink-shadow: rgba(190, 24, 93, 0.20);
+}
+
+/* 1. LIGHT PINK WEBSITE BACKGROUND */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(
+        135deg,
+        #fff5f9 0%,
+        #ffeaf3 45%,
+        #fff1f7 100%
+    ) !important;
+    color: #4a1830;
+    overflow-x: hidden;
+}
+
+/* Soft animated background glow */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 12% 18%,
+            rgba(244, 114, 182, 0.15),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 88% 72%,
+            rgba(190, 24, 93, 0.09),
+            transparent 30%
+        );
+
+    animation: pinkBackgroundFlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes pinkBackgroundFlow {
+    0% {
+        transform: translate3d(-1%, 0, 0) scale(1);
+    }
+    100% {
+        transform: translate3d(1%, 1%, 0) scale(1.04);
+    }
+}
+
+/* 2. PREMIUM WHITE-PINK CARDS */
+.stat-card,
+.panel,
+.player-card,
+.staff-card,
+.table-wrap,
+.modal,
+.role-gate-card,
+.role-gate,
+.squad-picker,
+.squad-choice {
+    border: 1px solid rgba(244, 114, 182, 0.25) !important;
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 16px rgba(190, 24, 93, 0.08),
+        0 1px 3px rgba(190, 24, 93, 0.05);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* 3. LIGHT-PINK CARD HOVER + DARK-PINK SHADOW */
+@media (hover: hover) and (pointer: fine) {
+    .stat-card:hover,
+    .panel:hover,
+    .player-card:hover,
+    .staff-card:hover,
+    .squad-choice:hover {
+        background: linear-gradient(
+            145deg,
+            #fff0f7,
+            #ffd8e9
+        ) !important;
+
+        border-color: #f472b6 !important;
+
+        box-shadow:
+            0 15px 30px rgba(190, 24, 93, 0.19),
+            0 5px 12px rgba(190, 24, 93, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.85);
+
+        transform: translateY(-5px) scale(1.012);
+    }
+}
+
+/* 4. PLAYER CARD SPECIAL 3D EFFECT */
+.player-card,
+.staff-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #fff5f9
+    );
+}
+
+.player-card::before,
+.staff-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+
+    background: linear-gradient(
+        110deg,
+        transparent,
+        rgba(255, 255, 255, 0.75),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .player-card:hover::before,
+    .staff-card:hover::before {
+        animation: pinkCardShine 0.8s ease forwards;
+    }
+}
+
+@keyframes pinkCardShine {
+    to {
+        left: 150%;
+    }
+}
+
+/* 5. PLAYER PHOTO ANIMATION */
+.avatar {
+    border: 2px solid #ffd0e5;
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.12);
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .player-card:hover .avatar,
+    .staff-card:hover .avatar {
+        transform: scale(1.07) rotate(-2deg);
+        box-shadow: 0 7px 18px rgba(190, 24, 93, 0.22);
+    }
+}
+
+/* 6. PINK BUTTONS */
+.btn-primary {
+    background: linear-gradient(
+        135deg,
+        #ec4899,
+        #be185d
+    ) !important;
+
+    color: #fff !important;
+    border: none;
+
+    box-shadow: 0 4px 12px rgba(190, 24, 93, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 8px 20px rgba(190, 24, 93, 0.30);
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+.btn-outline {
+    border-color: #f3a4c8;
+    transition: all 0.25s ease;
+}
+
+.btn-outline:hover {
+    background: #ffe3ef;
+    border-color: #ec4899;
+    color: #9d174d;
+}
+
+/* 7. PINK NAVIGATION */
+.topbar {
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid #f8c7de;
+    box-shadow: 0 4px 18px rgba(190, 24, 93, 0.07);
+    backdrop-filter: blur(12px);
+}
+
+.topbar nav a:hover,
+.topbar nav a.active {
+    background: #ffe0ee;
+    color: #9d174d;
+}
+
+.brand-mark {
+    background: linear-gradient(
+        135deg,
+        #ec4899,
+        #9d174d
+    );
+    box-shadow: 0 5px 13px rgba(190, 24, 93, 0.22);
+}
+
+/* 8. PINK SECTION HEADINGS */
+.section-heading h2 {
+    color: #831843;
+}
+
+.section-desc {
+    color: #9d5677;
+}
+
+/* Animated underline below section headings */
+.section-heading h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-heading h2::after {
+    content: "";
+    display: block;
+    width: 38%;
+    height: 3px;
+    margin-top: 5px;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #ec4899,
+        #f9a8d4
+    );
+
+    transition: width 0.3s ease;
+}
+
+.section-heading h2:hover::after {
+    width: 85%;
+}
+
+/* 9. INPUT FOCUS EFFECT */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ec4899 !important;
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.13) !important;
+}
+
+/* 10. TABLE PINK HOVER */
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #fff0f7 !important;
+}
+
+th {
+    background: #ffe6f1;
+    color: #831843;
+}
+
+/* 11. PINK HERO SECTION */
+.hero:not(.hero-photo) {
+    background: linear-gradient(
+        120deg,
+        #831843 0%,
+        #be185d 52%,
+        #ec4899 100%
+    );
+    box-shadow: 0 12px 30px rgba(190, 24, 93, 0.19);
+}
+
+.hero-photo {
+    border: 1px solid rgba(244, 114, 182, 0.25);
+    box-shadow: 0 12px 30px rgba(190, 24, 93, 0.16);
+}
+
+/* 12. 2D FLOATING HERO BALL */
+.hero-ball {
+    filter: drop-shadow(0 12px 16px rgba(80, 10, 45, 0.25));
+    animation: pinkBallFloat 4s ease-in-out infinite;
+}
+
+@keyframes pinkBallFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(5deg);
+    }
+}
+
+/* 13. MOBILE RESPONSIVE POLISH */
+@media (max-width: 760px) {
+    .stat-card,
+    .panel,
+    .player-card,
+    .staff-card {
+        border-radius: 13px;
+    }
+
+    .player-card,
+    .staff-card {
+        padding: 14px;
+    }
+
+    .hero:not(.hero-photo) {
+        box-shadow: 0 7px 20px rgba(190, 24, 93, 0.14);
+    }
+}
+
+/* 14. ACCESSIBILITY: REDUCE MOTION */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
