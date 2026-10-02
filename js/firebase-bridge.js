@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 import { firebaseConfig, ADMIN_UID } from "./firebase-config.js";
-
 const configured = firebaseConfig.apiKey !== "PASTE_FIREBASE_API_KEY_HERE" &&
   firebaseConfig.projectId !== "PASTE_PROJECT_ID_HERE" && ADMIN_UID !== "PASTE_ADMIN_AUTH_UID_HERE";
 let auth, db, app;
