@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Official public page of Nayyouvak Sporting Club Adri, Mau, Uttar Pradesh. Fixtures, squad, team gallery and club notices.">
+<title>Nayyouvak Sporting Club Adri | Official Club Page</title>
+<link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="public.html"><span class="brand-mark">⚽</span><span><strong id="brandName">NAVYUVAK</strong><small>SPORTING CLUB · ADRI, MAU</small></span></a>
+  <button class="menu" id="menuBtn" aria-label="Open navigation">☰</button>
+  <nav class="nav" id="nav"><a href="#matches">Matches</a><a href="#squad">Squad</a><a href="#gallery">Gallery</a><a href="#achievements">Club Highlights</a><a href="#notices">Notices</a><a href="#contact">Contact</a></nav>
+  <a class="admin-link" href="index.html">🔐 Club Login</a>
+</header>
+<main class="wrap">
+  <section class="hero"><div class="hero-copy"><p class="eyebrow">⚽ ADRI · DISTRICT MAU · FOOTBALL FAMILY</p><h1 id="heroName">Nayyouvak Sporting <span>Club Adri</span></h1><p>Ek team. Ek jazba. Ek maqsad. Club ke upcoming matches, selected squad aur team updates yahan dekhein.</p><div class="actions"><a class="btn btn-main" href="#matches">🏆 Upcoming Matches</a><a class="btn btn-glass" href="#squad">👥 Meet the Squad</a></div><div class="hero-tags"><span>TEAM SPIRIT</span><span>UNITY</span><span>DISCIPLINE</span></div></div></section>
+  <section class="section" id="matches"><div class="section-head"><div><p class="kicker">ON THE PITCH</p><h2>Upcoming Matches</h2><p class="desc">Published fixtures, timing and venue.</p></div><span class="pill" id="matchCount">Loading fixtures…</span></div><div class="grid" id="matchGrid"></div><div class="empty" id="matchEmpty" hidden>No upcoming match has been published yet.</div></section>
+  <section class="section" id="squad"><div class="section-head"><div><p class="kicker">ONE TEAM · ONE DREAM</p><h2>Our Playing Squad</h2><p class="desc">Active players registered with the club.</p></div><span class="pill" id="playerCount">Loading squad…</span></div><div class="player-grid" id="playerGrid"></div><div class="empty" id="playerEmpty" hidden>Player profiles will appear here when published by the club.</div></section>
+  <section class="section" id="gallery"><div class="section-head"><div><p class="kicker">MEMORIES & TEAMWORK</p><h2>Team Gallery</h2><p class="desc">Team and player photos available in the public club roster.</p></div></div><div class="gallery" id="galleryGrid"></div><div class="empty" id="galleryEmpty" hidden>Team photos will appear here when available.</div></section>
+  <section class="section" id="achievements"><div class="section-head"><div><p class="kicker">OUR CLUB</p><h2>Club Highlights</h2><p class="desc">A snapshot of the team, squad and match activity.</p></div></div><div class="feature-grid" id="highlightGrid"></div></section>
+  <section class="section" id="notices"><div class="section-head"><div><p class="kicker">CLUB UPDATES</p><h2>Notices & Updates</h2><p class="desc">Match announcements and club updates.</p></div></div><div class="notice-list" id="noticeList"></div><div class="empty" id="noticeEmpty" hidden>No public notices at the moment.</div></section>
+  <section class="section" id="contact"><div class="section-head"><div><p class="kicker">COME SUPPORT THE TEAM</p><h2>Club Information</h2></div></div><div class="contact-grid"><article class="contact-card"><p class="eyebrow">OUR HOME</p><h2 id="contactName">Nayyouvak Sporting Club Adri</h2><p id="districtText">Adri, Mau, Uttar Pradesh</p><p>Follow the public page for match fixtures, squad updates and club announcements.</p></article><article class="card"><p class="kicker">GET IN TOUCH</p><h3>Club Contact</h3><p id="phoneText">Contact details will be published here by the club.</p><p class="desc">For club management or login, use the secure Club Login link at the top.</p><a class="btn btn-main" href="index.html">Open Club Portal</a></article></div><p class="status" id="dataStatus">Loading public club information…</p></section>
+  <footer><span>© <span id="year"></span> <strong id="footerName">Nayyouvak Sporting Club Adri</strong></span><span>Designed & Developed with ❤️ by <strong>Sanaul Islam</strong></span></footer>
+</main>
+<script type="module" src="js/public.js"></script>
+</body></html>
