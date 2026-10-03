@@ -180,7 +180,11 @@ $("heroPhotoInput").addEventListener("change",e=>{
 try{const savedHero=localStorage.getItem("nsc_adri_hero_photo");if(savedHero)$("homeHero").style.backgroundImage=`linear-gradient(90deg,rgba(5,17,31,.91) 0%,rgba(5,17,31,.70) 48%,rgba(5,17,31,.20) 100%),url("${savedHero}")`;}catch(e){}
 
 $("adminLoginBtn").addEventListener("click",()=>{$("adminLoginForm").hidden=false;$("loginEmail").focus();});
-$("userViewBtn").addEventListener("click",()=>{$("adminLoginForm").hidden=false;$("loginEmail").focus();});
+$("userViewBtn").addEventListener("click",()=>{
+  $("adminLoginForm").hidden = true;
+  $("demoUserForm").hidden = false;
+  $("demoMobile").focus();
+});
 $("adminLoginForm").addEventListener("submit",async e=>{
  e.preventDefault();
  try {
@@ -190,6 +194,38 @@ $("adminLoginForm").addEventListener("submit",async e=>{
    $("loginPassword").value="";
  } catch(err) { alert(err.message || "Login fail hua. Email/password aur Firebase Authentication check karein."); }
 });
+
+
+$("demoUserForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const mobile = $("demoMobile").value.replace(/\D/g, "");
+  const dob = $("demoDob").value;
+
+  const player = data.players.find(p =>
+    String(p.phone || "").replace(/\D/g, "") === mobile &&
+    String(p.dob || "") === dob
+  );
+
+  if (!player) {
+    alert("Mobile number ya Date of Birth sahi nahi hai.");
+    return;
+  }
+
+  currentRole = "user";
+  firebaseReady = false;
+  signedInEmail = "";
+
+  applyRole();
+  render();
+
+  $("roleGate").classList.remove("show");
+  $("demoUserForm").hidden = true;
+
+  toast("Welcome, " + player.name + "!");
+});
+
+
 $("roleSwitchBtn").addEventListener("click",async()=>{try{await window.clubFirebase?.logout();}catch(e){console.error(e);}currentRole="";firebaseReady=false;applyRole();$("adminLoginForm").hidden=true;$("loginPassword").value="";});
 // Mark management controls as admin-only; database rules independently enforce authorization.
 document.querySelectorAll('button[onclick*="openModal"], #exportBtn, #exportBtn2, #clearDataBtn, .hero-photo-upload, .file-label').forEach(el=>el.setAttribute("data-admin-only",""));
