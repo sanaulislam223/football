@@ -955,3 +955,4 @@ th {
         transition-duration: 0.01ms !important;
     }
 }
+.btn-public{width:100%;margin-top:10px;min-height:45px;background:linear-gradient(110deg,#0c7040,#168c59);color:#fff;border:1px solid #0c7040}
